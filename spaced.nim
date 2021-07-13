@@ -62,10 +62,10 @@ proc calculateEFactor(score: float, eFactor: float): float =
 
 proc reviewCard(card: JsonNode): string =
   let startTime = getTime().toUnixFloat()
-  print(card["front"], color=fgBlue)
+  print(card["front"].getStr(), color=fgBlue)
   print("\n\npress any key to flip\n", color=fgGreen)
   var flip = readLine(stdin)
-  print(card["back"], color=fgYellow)
+  print(card["back"].getStr(), color=fgYellow)
   let answerTime = getTime().toUnixFloat()
 
   print("\n\nhow'd you do?\n", color=fgCyan)
