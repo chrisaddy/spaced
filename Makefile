@@ -7,3 +7,5 @@ release:
 run:
 	nim compile --run --threads:on spaced.nim
 
+test:
+	nimble test

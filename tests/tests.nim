@@ -6,7 +6,20 @@
 # To run these tests, simply execute `nimble test`.
 
 import unittest
+import ../scoring
+import ../styleprint
 
-import spaced
-test "can add":
-  check add(5, 5) == 10
+
+test "EFactor for 0":
+  var score = 0.0
+  var eFactorOld = 1.0
+
+  check: scoring.calculateEFactor(score, eFactorOld) == 0.01
+
+  score = 0.0
+  eFactorOld = 8.34
+  check: scoring.calculateEFactor(score, eFactorOld) == 0.01
+
+test "styleprint":
+  check print("hello", "green") == "hello"
+

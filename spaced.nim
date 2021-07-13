@@ -1,5 +1,4 @@
-import os
-import flatdb
+import os import flatdb
 import loki, strutils, options
 from sequtils import zip
 import json
@@ -7,6 +6,8 @@ import tables
 import times
 import Terminal
 import osproc
+import scoring
+import styleprint
 
 discard execCmd "clear"
 
@@ -24,27 +25,16 @@ if not fileExists(db):
 var cards = newFlatDb(path=db, inmemory=false)
 discard cards.load()
 
-proc print(text: string, color: ForegroundColor) =
-  setForegroundColor(color)
-  stdout.write(text)
-  resetAttributes()
-
-proc print(text: JsonNode, color: ForegroundColor) =
-  setForegroundColor(color)
-  stdout.write(text)
-  resetAttributes()
-      
-
 proc addCard(): string =
   let ts = getTime().toUnixFloat()
   var front = ""
   var back = ""
 
-  print("[card front]\n", color=fgGreen)
+  print("[card front]\n", color="green")
   while front == "":
     front = readLine(stdin)
 
-  print("[card back]\n", color=fgBlue)
+  print("[card back]\n", color="blue")
   while back == "":
     back = readLine(stdin)
 
@@ -53,28 +43,21 @@ proc addCard(): string =
   return "card added"
 
 
-proc calculateEFactor(score: float, eFactor: float): float =
-  if score == 0:
-    return 0.01
-  let delta = 0.1 - (5 - score) * (0.08 + (5 - score) * 0.02)
-  return eFactor + delta
-
-
 proc reviewCard(card: JsonNode): string =
   let startTime = getTime().toUnixFloat()
-  print(card["front"].getStr(), color=fgBlue)
-  print("\n\npress any key to flip\n", color=fgGreen)
+  print(card["front"].getStr(), color="blue")
+  print("\n\npress any key to flip\n", color="green")
   var flip = readLine(stdin)
-  print(card["back"].getStr(), color=fgYellow)
+  print(card["back"].getStr(), color="yellow")
   let answerTime = getTime().toUnixFloat()
 
-  print("\n\nhow'd you do?\n", color=fgCyan)
-  print("0 - complete blackout\n", color=fgRed)
-  print("1 - incorrect response; the correct one remembered\n", color=fgYellow)
-  print("2 - incorrect response; where the correct one seemed easy to recall\n", color=fgCyan)
-  print("3 - correct response recalled with serious difficulty\n", color=fgMagenta)
-  print("4 - correct respoinse after a hesitation\n", color=fgBlue)
-  print("5 - perfect response\n", color=fgGreen)
+  print("\n\nhow'd you do?\n", color="cyan")
+  print("0 - complete blackout\n", color="red")
+  print("1 - incorrect response; the correct one remembered\n", color="yellow")
+  print("2 - incorrect response; where the correct one seemed easy to recall\n", color="cyan")
+  print("3 - correct response recalled with serious difficulty\n", color="magenta")
+  print("4 - correct respoinse after a hesitation\n", color="blue")
+  print("5 - perfect response\n", color="green")
 
   var scr = ""
   while scr notin @["0", "1", "2", "3", "4", "5"]:
@@ -144,7 +127,6 @@ loki(handler, input):
     return true
   default:
     write(stdout, "*** Unknown command: ", input.text, " ***\n")
-
 
 let command = newLoki(
   prompt="[spaced] ",
