@@ -1,4 +1,5 @@
-import os import flatdb
+import os
+import flatdb
 import loki, strutils, options
 from sequtils import zip
 import json
@@ -84,7 +85,7 @@ proc reviewCard(card: JsonNode): string =
   card["next_review"] = % nextReview
 
 
-  print("\n\npress any key to continue, enter q to quit\n", color=fgGreen)
+  print("\n\npress any key to continue, enter q to quit\n", color="green")
   flip = readLine(stdin)
 
   if flip == "q":
@@ -110,7 +111,7 @@ proc reviewCards(): string =
 loki(handler, input):
   do_add:
     var added = addCard()
-    print(added, color=fgGreen)
+    print(added, color="green")
     discard execCmd "clear"
   do_review:
     discard execCmd "clear"

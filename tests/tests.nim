@@ -19,7 +19,3 @@ test "EFactor for 0":
   score = 0.0
   eFactorOld = 8.34
   check: scoring.calculateEFactor(score, eFactorOld) == 0.01
-
-test "styleprint":
-  check print("hello", "green") == "hello"
-

@@ -16,16 +16,14 @@ proc textColor(color: string): ForegroundColor =
     of "yellow":
       return fgYellow
 
-proc print*(text: string, color: string): string =
+proc print*(text: string, color: string) =
   let foreground = textColor(color)
   setForegroundColor(foreground)
   stdout.write(text)
   resetAttributes()
-  return text
 
-proc print*(obj: JsonNode, color: string): JsonNode =
+proc print*(obj: JsonNode, color: string) =
   let foreground = textColor(color)
   setForegroundColor(foreground)
   stdout.write(obj)
   resetAttributes()
-  return obj
